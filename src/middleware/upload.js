@@ -18,6 +18,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: 'securevault',
       resource_type: resourceType,
+      access_mode: 'public',
       allowed_formats: ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png'],
       public_id: `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9.]/g, '_')}`
     };
