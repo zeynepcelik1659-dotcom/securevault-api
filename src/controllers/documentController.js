@@ -1,5 +1,6 @@
 const Document = require('../models/Document');
 const auditLogger = require('../utils/auditLogger');
+const path = require('path');
 
 const getMyDocuments = async (req, res) => {
   try {
@@ -48,11 +49,24 @@ const createDocument = async (req, res) => {
   try {
     const { title, content, isSensitive } = req.body;
 
+    let fileUrl = null;
+    let fileName = null;
+    let fileType = null;
+
+    if (req.file) {
+      fileName = req.file.originalname;
+      fileType = req.file.mimetype;
+      fileUrl = `/uploads/${req.file.filename}`;
+    }
+
     const document = await Document.create({
       title,
-      content,
+      content: content || '',
       ownerId: req.user.id,
-      isSensitive: isSensitive || false
+      isSensitive: isSensitive === 'true' || isSensitive === true,
+      fileUrl,
+      fileName,
+      fileType
     });
 
     await auditLogger({

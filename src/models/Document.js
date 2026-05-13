@@ -8,7 +8,7 @@ const documentSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true
+    default: ''
   },
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,6 +18,18 @@ const documentSchema = new mongoose.Schema({
   isSensitive: {
     type: Boolean,
     default: false
+  },
+  fileUrl: {
+    type: String,
+    default: null
+  },
+  fileName: {
+    type: String,
+    default: null
+  },
+  fileType: {
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 

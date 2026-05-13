@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getMyDocuments, getDocumentById, createDocument, deleteDocument } = require('../controllers/documentController');
 const { authenticate } = require('../middleware/auth');
+const upload = require('../middleware/upload');
 
 /**
  * @swagger
@@ -28,10 +29,9 @@ router.get('/my', authenticate, getMyDocuments);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
- *             required: [title, content]
  *             properties:
  *               title:
  *                 type: string
@@ -39,11 +39,14 @@ router.get('/my', authenticate, getMyDocuments);
  *                 type: string
  *               isSensitive:
  *                 type: boolean
+ *               file:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Doküman oluşturuldu
  */
-router.post('/', authenticate, createDocument);
+router.post('/', authenticate, upload.single('file'), createDocument);
 
 /**
  * @swagger

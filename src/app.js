@@ -23,6 +23,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(generalLimiter);
+// Upload klasörü
+app.use('/uploads', express.static(require('path').join(__dirname, '../uploads')));
 
 // Swagger UI
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

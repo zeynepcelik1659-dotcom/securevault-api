@@ -88,4 +88,23 @@ const getAllDocuments = async (req, res) => {
   }
 };
 
-module.exports = { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments };
+const updateUserRole = async (req, res) => {
+  try {
+    const { role } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true }
+    ).select('-passwordHash');
+
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+    }
+
+    res.status(200).json({ message: 'Rol güncellendi', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+  }
+};
+
+module.exports = { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments, updateUserRole };

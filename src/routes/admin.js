@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments } = require('../controllers/adminController');
+const { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments, updateUserRole } = require('../controllers/adminController');
 const { authenticate, authorizeAdmin } = require('../middleware/auth');
 
 /**
@@ -91,5 +91,36 @@ router.post('/users', authenticate, authorizeAdmin, createUser);
  *         description: Tüm dokümanlar döner
  */
 router.get('/documents', authenticate, authorizeAdmin, getAllDocuments);
+
+/**
+ * @swagger
+ * /api/admin/users/{id}/role:
+ *   patch:
+ *     summary: Kullanıcı rolünü güncelle
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [role]
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin]
+ *     responses:
+ *       200:
+ *         description: Rol güncellendi
+ */
+router.patch('/users/:id/role', authenticate, authorizeAdmin, updateUserRole);
 
 module.exports = router;
