@@ -54,9 +54,9 @@ const createDocument = async (req, res) => {
     let fileType = null;
 
     if (req.file) {
+      fileUrl = req.file.path;
       fileName = req.file.originalname;
       fileType = req.file.mimetype;
-      fileUrl = `/uploads/${req.file.filename}`;
     }
 
     const document = await Document.create({
