@@ -30,6 +30,10 @@ const documentSchema = new mongoose.Schema({
   fileType: {
     type: String,
     default: null
+  },
+  filePublicId: {
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 

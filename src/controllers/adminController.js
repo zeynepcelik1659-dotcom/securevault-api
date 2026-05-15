@@ -107,4 +107,22 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-module.exports = { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments, updateUserRole };
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+    }
+
+    await Document.deleteMany({ ownerId: user._id });
+    await AuditLog.deleteMany({ userId: user._id });
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: 'Kullanıcı ve tüm verileri silindi' });
+  } catch (error) {
+    res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+  }
+};
+
+module.exports = { getDashboard, getLogs, getAllUsers, createUser, getAllDocuments, updateUserRole, deleteUser };

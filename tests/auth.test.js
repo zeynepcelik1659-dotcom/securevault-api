@@ -10,7 +10,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteMany({});
+  await User.deleteMany({ email: 'jest@test.com' });
   await RefreshToken.deleteMany({});
   await mongoose.connection.close();
 });
